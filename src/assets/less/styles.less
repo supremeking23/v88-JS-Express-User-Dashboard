@@ -1,0 +1,290 @@
+// variables
+@body-background: #15202b;
+@primary-color: #dc541f;
+@content-container-primary: #202e3a;
+@content-container-secondary: #1b2836;
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	background: @body-background;
+}
+
+body * {
+	// outline: 1px dashed red;
+}
+
+dl {
+	dt,
+	dd {
+		color: #fff;
+		margin: 5px 0;
+	}
+}
+
+.mt-2 {
+	margin-top: 2rem;
+}
+
+.p-2 {
+	padding: 2rem !important;
+}
+
+.pl-2 {
+	padding-left: 2rem !important;
+}
+
+.display-4 {
+	font-size: 3.5rem;
+	font-weight: 300;
+	line-height: 1.2;
+}
+
+.lead {
+	font-size: 1.25rem;
+	font-weight: 300;
+}
+
+.img-fluid {
+	max-width: 100%;
+	height: auto;
+}
+
+.btn-primary {
+	background: @primary-color;
+	border-color: @primary-color;
+}
+
+.btn-primary:hover {
+	background-color: #e15e2b;
+	border-color: #e15e2b;
+}
+
+.submit-button-section {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+nav {
+	background: @content-container-primary;
+}
+
+.jumbotron {
+	padding: 2rem 2rem;
+	margin-bottom: 2rem;
+	background: @content-container-secondary;
+	border-radius: 0.3rem;
+	color: #fff;
+
+	ul {
+		margin: 1rem;
+		li {
+			list-style: disc;
+		}
+	}
+}
+
+.features {
+	color: #fff;
+	.card {
+		background: @content-container-secondary;
+		padding: 1rem 2rem 1rem 2rem;
+	}
+
+	h2 {
+		font-size: 2rem;
+	}
+}
+
+form.card {
+	background: @content-container-secondary;
+	padding: 0.6rem;
+	color: #fff;
+	h2 {
+		font-size: 1.5rem;
+		text-align: center;
+	}
+
+	input[type="text"]:focus,
+	input[type="password"]:focus,
+	textarea:focus {
+		border-bottom: 1px solid @primary-color !important;
+		-webkit-box-shadow: 0 1px 0 0 @primary-color !important;
+		box-shadow: 0 1px 0 0 @primary-color !important;
+	}
+
+	input[type="text"]:focus + label,
+	input[type="password"]:focus + label,
+	textarea:focus + label {
+		color: #dc541f !important;
+	}
+
+	input[type="text"],
+	input[type="password"],
+	textarea {
+		color: #fff;
+	}
+
+	button {
+		background: #dc541f;
+		border-color: #dc541f;
+	}
+
+	button:hover {
+		background-color: #e15e2b;
+		border-color: #e15e2b;
+	}
+}
+
+// admin / dashboard change
+.add-user-column {
+	display: flex;
+	flex-direction: row-reverse;
+	a {
+		background: @primary-color;
+		border-color: @primary-color;
+	}
+
+	a:hover {
+		background-color: #e15e2b;
+		border-color: #e15e2b;
+	}
+}
+.users {
+	color: #fff;
+	.card {
+		background: @content-container-secondary;
+
+		table.highlight > tbody > tr:hover {
+			background-color: @primary-color;
+		}
+
+		table {
+			th {
+				color: #fff;
+				background-color: @content-container-primary;
+				border-color: @content-container-primary;
+				text-align: center;
+			}
+
+			tr {
+				border-bottom: 1px solid #fff;
+
+				td {
+					text-align: center;
+					.modal {
+						background: @content-container-primary;
+						height: 300px;
+						.modal-content {
+							text-align: left;
+
+							h4 {
+								border-bottom: 2px solid #fff;
+								padding-bottom: 2rem;
+							}
+							p {
+								margin: 10px;
+							}
+
+							.border-bottom {
+								border-bottom: 2px solid #fff;
+								padding-bottom: 2rem;
+							}
+						}
+
+						.modal-footer {
+							background: @content-container-primary;
+							display: flex;
+							flex-direction: row-reverse;
+							button,
+							form {
+								margin: 0 10px;
+								color: #fff;
+							}
+
+							form {
+								button {
+									background: @primary-color;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			a {
+				color: #fff;
+				transition: padding-bottom 0.5s;
+				padding: 0 10px;
+			}
+			a:hover {
+				color: #fff;
+				border-bottom: 3px solid #fff;
+				padding-bottom: 8px;
+			}
+		}
+	}
+}
+
+// show page user-message-reply
+
+.user-message-reply {
+	.card {
+		background: @content-container-primary;
+		h2 {
+			color: #fff;
+			font-size: 2rem;
+		}
+	}
+}
+
+.send-message-section {
+	.modal {
+		color: #fff;
+		background: @content-container-primary;
+		height: 300px;
+		.modal-content {
+			text-align: left;
+
+			h4 {
+				border-bottom: 2px solid #fff;
+				padding-bottom: 2rem;
+			}
+			p {
+				margin: 10px;
+			}
+
+			.border-bottom {
+				border-bottom: 2px solid #fff;
+				padding-bottom: 2rem;
+			}
+		}
+
+		.modal-footer {
+			background: @content-container-primary;
+			display: flex;
+			flex-direction: row-reverse;
+			button,
+			form {
+				margin: 0 10px;
+				color: #fff;
+			}
+
+			form {
+				button {
+					background: @primary-color;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 992px) {
+	nav .brand-logo {
+		// display: none;
+		font-size: 1.2rem;
+	}
+}
