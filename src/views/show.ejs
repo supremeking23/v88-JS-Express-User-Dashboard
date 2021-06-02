@@ -31,18 +31,41 @@
 
             <div class="row send-message-section">
                 <div class="col s12">
-                    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+                    <a class="waves-effect waves-light btn modal-trigger btn-primary" href="#modal1" style="float: right;">Post a message</a>
 
                     <!-- Modal Structure -->
                     <div id="modal1" class="modal">
-                      <div class="modal-content">
-                        <h4>Modal Header</h4>
-                        <p>A bunch of text</p>
-                      </div>
-                      <div class="modal-footer">
-                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-                      </div>
+                        <form action="post_message_process" method="POST">
+                            <div class="modal-content">
+                                <h5>Leave a message for Ivan Christian Jay test</h5>
+                            
+                                    <div class="input-field col s12">
+                                        <input type="hidden" name="message_from" value="1">
+                                        <input type="hidden" name="message_to" value="1">
+                                        <textarea id="textarea1" id="discription" name="description" class="materialize-textarea"></textarea>
+                                        <label for="textarea1">Description</label>
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                               
+                                <button type="button" class="modal-close waves-effect waves-red btn-flat red darken-4">Close</button>
+                                <button type="submit" class=" waves-effect  btn-flat btn-primary">Send <i class="material-icons right">send</i></button>
+                            </div>
+                        </form>
                     </div>
+                </div>
+            </div>
+
+
+            <div class="row messages">
+                <div class="col s12 card message">
+                   <div class="message-head">
+                        <h2>Mavis Vermillion</h2>
+                        <span >1 months ago</span>
+                   </div>
+                   
+                    <p>oi ano gawa mo ngayon ?</p>
+                    <a href="/show/3/10" style="float:right">(6) replies</a>
                 </div>
             </div>
 

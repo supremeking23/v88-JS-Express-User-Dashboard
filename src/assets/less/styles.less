@@ -25,6 +25,21 @@ dl {
 	}
 }
 
+.modal-error {
+	background: #b71c1c;
+	color: #fff;
+	ul {
+		margin: 20px 40px;
+		li {
+			list-style-type: disc;
+			margin: 0.4rem;
+		}
+	}
+	.modal-footer {
+		background: #b71c1c;
+	}
+}
+
 .mt-2 {
 	margin-top: 2rem;
 }
@@ -53,12 +68,24 @@ dl {
 	height: auto;
 }
 
-.btn-primary {
+.btn-primary,
+.alert-primary {
 	background: @primary-color;
 	border-color: @primary-color;
 }
 
-.btn-primary:hover {
+.alert-danger {
+	background: #b71c1c;
+	border-color: #b71c1c;
+}
+
+.alert-danger:hover {
+	background: #c62828;
+	border-color: #c62828;
+}
+
+.btn-primary:hover,
+.alert-primary:hover {
 	background-color: #e15e2b;
 	border-color: #e15e2b;
 }
@@ -256,17 +283,18 @@ form.card {
 			p {
 				margin: 10px;
 			}
+		}
 
-			.border-bottom {
-				border-bottom: 2px solid #fff;
-				padding-bottom: 2rem;
+		form {
+			textarea {
+				color: #fff;
 			}
 		}
 
 		.modal-footer {
 			background: @content-container-primary;
-			display: flex;
-			flex-direction: row-reverse;
+			// display: flex;
+			// flex-direction: row-reverse;
 			button,
 			form {
 				margin: 0 10px;
@@ -278,6 +306,18 @@ form.card {
 					background: @primary-color;
 				}
 			}
+		}
+	}
+}
+
+.messages {
+	.message {
+		padding: 1rem;
+		color: #fff;
+		.message-head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 		}
 	}
 }

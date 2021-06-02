@@ -2,9 +2,38 @@
 	<body>
 		<%- include('includes/nav')%>
 
+		<script>
+			
+		</script>
+
+		<% if(notification) { %>
+			<!-- <h1><%= notification.message %></h1> -->
+			<input type="hidden" class="notification-message"  value="<%= notification.message %>">
+			<input type="hidden" class="notification-style" name="notification" value="<%= notification.style %>">
+		<% } %>
+
+
+		<% if(form_errors) { %>
+			<input type="hidden" class="form_errors"  value="true">
+		<% } %>
+
 		<div class="mt-2 container">
 			<!-- Page Layout here -->
-		
+		  <!-- Modal Structure -->
+		  <div id="" class="modal modal-error">
+			<div class="modal-content">
+			  <h4>Error in form submission</h4>
+			  <p>Please fix the following errors:</p>
+			  <ul>
+				<% for(let error in form_errors) { %>
+					<li><%= form_errors[error];%></li>
+				<% } %>
+			  </ul>
+			</div>
+			<div class="modal-footer">
+			  <a href="#!" class="modal-close waves-effect waves-green white btn-flat">Close</a>
+			</div>
+		  </div>
 
 
 			<div class="row ">
@@ -12,7 +41,7 @@
 					<form class="card" action="/register_process" method="POST">
 						<h2>Registration</h2>
 						<div class="row">
-
+						
 							<div class="input-field col s12">
 								<input id="email" name="email" type="text" class="validate">
 								<label for="email">Email</label>

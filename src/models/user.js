@@ -1,75 +1,55 @@
-const dbConnection = require("../config");
+const dbConnection = require("../config").promise();
 
 class User {
-	constructor() {
+	constructor(user) {
 		// this.user = {};
 		// this.created_at = new Date();
+		this._first_name = user.firstname;
+		this._last_name = user.lastname;
+		this._email = user.email;
+		this._password = user.password;
+		this._user_level = 1; // 1 for normal user 9 for admin
+		this._created_at = new Date();
 	}
 
-	// set's user data and return this.user with first_name etc
-	// trying to use the getters and setters before, failed to implement it
-	// userData(user) {
-	// 	let data = {
-	// 		first_name: user.firstname,
-	// 		last_name: user.lastname,
-	// 		email: user.email,
-	// 		password: user.password,
-	// 		created_at: this.created_at,
-	// 	};
-	// 	this.user = data;
-	// 	return this.user;
-	// }
-
-	// async create(newUser) {
-	// 	const user = await dbConnection.any("INSERT INTO users (first_name,last_name,email,password,created_at) VALUES ($1,$2,$3,$4,$5)", [
-	// 		newUser.first_name,
-	// 		newUser.last_name,
-	// 		newUser.email,
-	// 		newUser.password,
-	// 		newUser.created_at,
-	// 	]);
-
-	// 	return user;
-	// }
-
-	// async findByEmail(email) {
-	// 	const user = await dbConnection.any("SELECT * FROM users WHERE email = $1 ", [email]);
-	// 	return user;
-	// }
-
-	async getAllPlayers() {
-		try {
-			const user = await dbConnection.any("SELECT * FROM users ");
-			return user;
-		} catch (error) {}
+	set password(password) {
+		this._password = password;
 	}
 
-	async filter_name(name) {
+	async save() {
 		try {
-			const user = await dbConnection.any(`SELECT * FROM users WHERE name LIKE   '%'||$1||'%' `, [name]);
-			return user;
-		} catch (error) {}
-	}
-
-	async filter_gender(gender) {
-		try {
-			const user = await dbConnection.any(`SELECT * FROM users WHERE gender = $1 OR gender = $2 `, [gender[0], gender[1]]);
-			return user;
-		} catch (error) {}
-	}
-
-	async filter_sport(sport) {
-		try {
-			const user = await dbConnection.any(
-				`SELECT * FROM users WHERE sport_id = $1 OR sport_id = $2 OR sport_id = $3 OR sport_id = $4 OR sport_id = $5 OR sport_id = $6 `,
-				[sport[0], sport[1], sport[2], sport[3], sport[4], sport[5]]
+			const [row] = await dbConnection.execute(
+				`INSERT INTO users(first_name,last_name,email,password,user_level,created_at) VALUES(?,?,?,?,?,?)`,
+				[this._first_name, this._last_name, this._email, this._password, this._user_level, this._created_at]
 			);
-			return user;
-		} catch (error) {}
+
+			return row;
+		} catch (error) {
+			console.log(`error on model`);
+			console.log(error);
+		}
 	}
+
+	async find_email(email) {
+		try {
+			const [rows, fields] = await dbConnection.execute(`SELECT * FROM users WHERE email = ?`, [email]);
+
+			return rows;
+		} catch (error) {
+			console.log(`error on model`);
+			console.log(error);
+		}
+	}
+
+	// async find_email(email) {
+	// 	dbConnection.query('SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45', function (err, results, fields) {
+	// 		console.log(results); // results contains rows returned by server
+	// 		console.log(fields); // fields contains extra meta data about results, if available
+	// 	});
+	// }
 }
 
-module.exports = new User();
+module.exports = User;
 
 // let user = function (user) {
 // 	this.first_name = user.firstname;

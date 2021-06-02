@@ -31,6 +31,17 @@
 			$(document).ready(function () {
 				$(".sidenav").sidenav();
 				$(".modal").modal();
+
+				var Modalelem = document.querySelector(".modal-error");
+				var instance = M.Modal.init(Modalelem);
+
+				if ($(".form_errors").val() == "true") {
+					instance.open();
+				}
+
+				if ($(".notification-message").val() != "") {
+					M.toast({ html: $(".notification-message").val(), classes: $(".notification-style").val() });
+				}
 			});
 		</script>
 		<title>Express 2 : User Dashboard</title>
