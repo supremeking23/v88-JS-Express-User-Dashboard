@@ -22,7 +22,11 @@ class Users {
 	}
 
 	signin(req, res) {
-		res.render("signin");
+		res.render("signin", {
+			notification: req.session.notification != undefined ? req.session.notification : undefined,
+			form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+		});
+		req.session.destroy();
 	}
 
 	register(req, res) {
@@ -88,6 +92,38 @@ class Users {
 			console.log(`error on controller`);
 			console.log(error);
 		}
+	}
+
+	async signin_process(req, res) {
+		let form_error_array = registrationValidation(req.body, validateEmail);
+
+		let notification = {};
+		if (form_error_array.length > 0) {
+			req.session.form_errors = form_error_array;
+			res.redirect("/signin");
+			return false;
+		}
+		let user = new userModel();
+		let found_email = await user.find_email(req.body.email);
+
+		if (found_email.length > 0) {
+			// console.log(found_email[0].BinaryRow);
+			// console.log(typeof found_email);
+			console.log(found_email[0].password);
+			const match = await bcrypt.compare(req.body.password, found_email[0].password);
+			if (match) {
+				res.redirect("admin");
+			} else {
+				notification.style = "alert-danger";
+				notification.message = "Wrong password";
+			}
+		} else {
+			notification.style = "alert-danger";
+			notification.message = "Unknown user";
+		}
+
+		req.session.notification = notification;
+		res.redirect("/signin");
 	}
 }
 

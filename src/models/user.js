@@ -4,12 +4,13 @@ class User {
 	constructor(user) {
 		// this.user = {};
 		// this.created_at = new Date();
-		this._first_name = user.firstname;
-		this._last_name = user.lastname;
-		this._email = user.email;
-		this._password = user.password;
+		this._first_name = user != undefined ? user.firstname : "";
+		this._last_name = user != undefined ? user.lastname : "";
+		this._email = user != undefined ? user.email : "";
+		this._password = user != undefined ? user.password : "";
 		this._user_level = 1; // 1 for normal user 9 for admin
 		this._created_at = new Date();
+		console.log(this);
 	}
 
 	set password(password) {

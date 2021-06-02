@@ -1,0 +1,21 @@
+<% if(notification) { %>
+<!-- <h1><%= notification.message %></h1> -->
+<input type="hidden" class="notification-message" value="<%= notification.message %>" />
+<input type="hidden" class="notification-style" name="notification" value="<%= notification.style %>" />
+<% } %> <% if(form_errors) { %>
+<input type="hidden" class="form_errors" value="true" />
+<% } %>
+<div id="" class="modal modal-error">
+	<div class="modal-content">
+		<h4>Error in form submission</h4>
+		<p>Please fix the following errors:</p>
+		<ul>
+			<% for(let error in form_errors) { %>
+			<li><%= form_errors[error];%></li>
+			<% } %>
+		</ul>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-close waves-effect waves-green white btn-flat">Close</a>
+	</div>
+</div>

@@ -26,7 +26,7 @@ module.exports = () => {
 				form_error_array.push("Confirm field cannot be blank");
 			}
 
-			if (password != confirm_password) {
+			if (password != confirm_password && confirm_password != undefined) {
 				form_error_array.push("Password and Confirm password does not match");
 			}
 
