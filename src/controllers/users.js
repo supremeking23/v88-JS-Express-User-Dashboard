@@ -91,7 +91,12 @@ class Users {
 				res.redirect("/");
 			} else {
 				client.hgetall("user_session", (err, obj) => {
-					res.render("new", { user: obj });
+					res.render("new", {
+						notification: req.session.notification != undefined ? req.session.notification : undefined,
+						form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+						user: obj,
+					});
+					req.session.destroy();
 				});
 			}
 		});
