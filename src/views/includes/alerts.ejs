@@ -3,7 +3,7 @@
 <input type="hidden" class="notification-message" value="<%= notification.message %>" />
 <input type="hidden" class="notification-style" name="notification" value="<%= notification.style %>" />
 <% } %> <% if(form_errors) { %>
-<input type="hidden" class="form_errors" value="true" />
+<input type="text" class="form_errors" value="true" />
 <% } %>
 <div id="" class="modal modal-error">
 	<div class="modal-content">
@@ -16,6 +16,6 @@
 		</ul>
 	</div>
 	<div class="modal-footer">
-		<a href="#!" class="modal-close waves-effect waves-green white btn-flat">Close</a>
+		<button class="modal-close waves-effect waves-green white btn-flat">Close</button>
 	</div>
 </div>

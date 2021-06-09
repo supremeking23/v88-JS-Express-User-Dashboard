@@ -10,7 +10,7 @@ class User {
 		this._password = user != undefined ? user.password : "";
 		this._user_level = 1; // 1 for normal user 9 for admin
 		this._created_at = new Date();
-		console.log(this);
+		// console.log(this);
 	}
 
 	set password(password) {
@@ -42,12 +42,37 @@ class User {
 		}
 	}
 
+	async find_user_by_id(id) {
+		try {
+			const [rows, fields] = await dbConnection.execute(`SELECT * FROM users WHERE id = ?`, [id]);
+
+			return rows;
+		} catch (error) {
+			console.log(`error on model`);
+			console.log(error);
+		}
+	}
+
 	async get_all_users() {
 		try {
 			const [rows, fields] = await dbConnection.execute(
 				`SELECT id,first_name,last_name, CONCAT(first_name,' ',last_name) as full_name,email, DATE_FORMAT(created_at,"%M %d %Y") as created_at,user_level FROM users `
 			);
 
+			return rows;
+		} catch (error) {
+			console.log(`error on model`);
+			console.log(error);
+		}
+	}
+
+	async edit_user_information(details) {
+		try {
+			// console.log(details);
+			const [rows, fields] = await dbConnection.execute(
+				`UPDATE users SET first_name = ?,last_name = ?,email = ?,user_level = ? , updated_at = ? WHERE id = ?`,
+				[details.firstname, details.lastname, details.email, details.user_level, new Date(), details.user_id]
+			);
 			return rows;
 		} catch (error) {
 			console.log(`error on model`);
