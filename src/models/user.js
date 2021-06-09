@@ -42,6 +42,19 @@ class User {
 		}
 	}
 
+	async get_all_users() {
+		try {
+			const [rows, fields] = await dbConnection.execute(
+				`SELECT id,first_name,last_name, CONCAT(first_name,' ',last_name) as full_name,email, DATE_FORMAT(created_at,"%M %d %Y") as created_at,user_level FROM users `
+			);
+
+			return rows;
+		} catch (error) {
+			console.log(`error on model`);
+			console.log(error);
+		}
+	}
+
 	// async find_email(email) {
 	// 	dbConnection.query('SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45', function (err, results, fields) {
 	// 		console.log(results); // results contains rows returned by server

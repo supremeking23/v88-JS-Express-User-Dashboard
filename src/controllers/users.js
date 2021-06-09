@@ -64,13 +64,15 @@ class Users {
 		// req.session.destroy();
 	}
 
-	admin(req, res) {
-		client.exists("user_session", (err, result) => {
+	async admin(req, res) {
+		client.exists("user_session", async (err, result) => {
 			if (result == 0) {
 				res.redirect("/");
 			} else {
+				let user = new userModel();
+				let users = await user.get_all_users();
 				client.hgetall("user_session", (err, obj) => {
-					res.render("admin", { user: obj });
+					res.render("admin", { user: obj, users });
 				});
 			}
 		});
@@ -84,7 +86,53 @@ class Users {
 	}
 
 	new(req, res) {
-		res.render("new");
+		client.exists("user_session", async (err, result) => {
+			if (result == 0) {
+				res.redirect("/");
+			} else {
+				client.hgetall("user_session", (err, obj) => {
+					res.render("new", { user: obj });
+				});
+			}
+		});
+		// res.render("new");
+	}
+
+	async add_new_process(req, res) {
+		try {
+			let form_error_array = registrationValidation(req.body, validateEmail);
+
+			if (form_error_array.length > 0) {
+				// req.session.form_errors = form_error_array;
+				// let form_error = {
+				// 	type: "register",
+				// 	errors: form_error_array,
+				// };
+				// req.session.form_errors = form_error_array;
+				req.session.form_errors = form_error_array;
+				res.redirect("/new");
+				return false;
+			}
+
+			let new_user = new userModel(req.body);
+			let found_email = await new_user.find_email(req.body.email);
+			let notification = {};
+			if (found_email.length > 0) {
+				notification.style = "alert-danger";
+				notification.message = "Error, email already in the database";
+			} else {
+				let hash_pass = await bcrypt.hash(req.body.password, saltRounds);
+				new_user.password = hash_pass;
+				let created_user = await new_user.save();
+				if (created_user.affectedRows == 1) {
+					notification.style = "alert-primary";
+					notification.message = "user has been created";
+				}
+				// console.log(hash_pass);
+			}
+			req.session.notification = notification;
+			res.redirect("/new");
+		} catch (error) {}
 	}
 
 	edit(req, res) {
