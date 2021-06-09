@@ -273,66 +273,105 @@ class Users {
 	}
 
 	async edit_information_process(req, res) {
-		client.hgetall("user_session", async (err, obj) => {
-			let form_error_array = registrationValidation(req.body, validateEmail);
-			if (form_error_array.length > 0) {
-				req.session.form_errors = form_error_array;
-				if (obj.user_id === req.body.user_id) {
-					res.redirect(`/edit`);
-				} else {
-					res.redirect(`/edit/${req.body.user_id}`);
+		try {
+			client.hgetall("user_session", async (err, obj) => {
+				let form_error_array = registrationValidation(req.body, validateEmail);
+				if (form_error_array.length > 0) {
+					req.session.form_errors = form_error_array;
+					if (obj.user_id === req.body.user_id) {
+						res.redirect(`/edit`);
+					} else {
+						res.redirect(`/edit/${req.body.user_id}`);
+					}
+					return false;
 				}
-				return false;
-			}
 
-			let user = new userModel();
+				let user = new userModel();
 
-			let edit_user = await user.edit_user_information(req.body);
-			// console.log(edit_user);
-			let notification = {};
-			if (edit_user.affectedRows > 0) {
-				notification.style = "alert-primary";
-				notification.message = "user information has been updated successufully";
-				req.session.notification = notification;
-				if (obj.user_id === req.body.user_id) {
-					res.redirect(`/edit`);
-				} else {
-					res.redirect(`/edit/${req.body.user_id}`);
+				let edit_user = await user.edit_user_information(req.body);
+				// console.log(edit_user);
+				let notification = {};
+				if (edit_user.affectedRows > 0) {
+					notification.style = "alert-primary";
+					notification.message = "user information has been updated successufully";
+					req.session.notification = notification;
+					if (obj.user_id === req.body.user_id) {
+						res.redirect(`/edit`);
+					} else {
+						res.redirect(`/edit/${req.body.user_id}`);
+					}
 				}
-			}
-		});
+			});
+		} catch (error) {}
 	}
 
 	async edit_password_process(req, res) {
-		client.hgetall("user_session", async (err, obj) => {
-			let form_error_array = registrationValidation(req.body, validateEmail);
-			if (form_error_array.length > 0) {
-				req.session.form_errors = form_error_array;
-				if (obj.user_id === req.body.user_id) {
-					res.redirect(`/edit`);
-				} else {
-					res.redirect(`/edit/${req.body.user_id}`);
+		try {
+			client.hgetall("user_session", async (err, obj) => {
+				let form_error_array = registrationValidation(req.body, validateEmail);
+				if (form_error_array.length > 0) {
+					req.session.form_errors = form_error_array;
+					if (obj.user_id === req.body.user_id) {
+						res.redirect(`/edit`);
+					} else {
+						res.redirect(`/edit/${req.body.user_id}`);
+					}
+					return false;
 				}
-				return false;
-			}
 
-			let hash_pass = await bcrypt.hash(req.body.password, saltRounds);
-			let user = new userModel();
-			req.body.password = hash_pass;
-			let edit_user = await user.edit_user_password(req.body);
-			// // console.log(edit_user);
-			let notification = {};
-			if (edit_user.affectedRows > 0) {
-				notification.style = "alert-primary";
-				notification.message = "user password has been updated successufully";
-				req.session.notification = notification;
-				if (obj.user_id === req.body.user_id) {
-					res.redirect(`/edit`);
-				} else {
-					res.redirect(`/edit/${req.body.user_id}`);
+				let hash_pass = await bcrypt.hash(req.body.password, saltRounds);
+				let user = new userModel();
+				req.body.password = hash_pass;
+				let edit_user = await user.edit_user_password(req.body);
+				// // console.log(edit_user);
+				let notification = {};
+				if (edit_user.affectedRows > 0) {
+					notification.style = "alert-primary";
+					notification.message = "user password has been updated successufully";
+					req.session.notification = notification;
+					if (obj.user_id === req.body.user_id) {
+						res.redirect(`/edit`);
+					} else {
+						res.redirect(`/edit/${req.body.user_id}`);
+					}
 				}
-			}
-		});
+			});
+		} catch (error) {}
+	}
+
+	async edit_description_process(req, res) {
+		try {
+			client.hgetall("user_session", async (err, obj) => {
+				let form_error_array = registrationValidation(req.body, validateEmail);
+				if (form_error_array.length > 0) {
+					req.session.form_errors = form_error_array;
+					if (obj.user_id === req.body.user_id) {
+						res.redirect(`/edit`);
+					} else {
+						res.redirect(`/edit/${req.body.user_id}`);
+					}
+					return false;
+				}
+
+				let user = new userModel();
+
+				console.log(req.body);
+
+				let edit_user = await user.edit_user_description(req.body);
+
+				let notification = {};
+				if (edit_user.affectedRows > 0) {
+					notification.style = "alert-primary";
+					notification.message = "user description has been updated successufully";
+					req.session.notification = notification;
+					if (obj.user_id === req.body.user_id) {
+						res.redirect(`/edit`);
+					} else {
+						res.redirect(`/edit/${req.body.user_id}`);
+					}
+				}
+			});
+		} catch (error) {}
 	}
 }
 

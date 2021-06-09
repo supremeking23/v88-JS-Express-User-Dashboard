@@ -16,6 +16,7 @@ module.exports = (app) => {
 	app.post("/add_new_process", user.add_new_process);
 	app.post("/edit_information_process", user.edit_information_process);
 	app.post("/edit_password_process", user.edit_password_process);
+	app.post("/edit_description_process", user.edit_description_process);
 
 	// app.post("/filter-by-name", user.filter_name_ajax);
 	// app.post("/filter-by-gender", user.filter_gender_ajax);
