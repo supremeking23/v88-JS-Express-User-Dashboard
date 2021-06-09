@@ -13,18 +13,18 @@
 
 			<div class="row ">
 				<div class="col m12 s12 card">
-                    <h2>Ivan Christian Jay Funcion</h2>
+                    <h2><%= found_user.full_name %></h2>
 				</div>
                 <div class="col m12 s12 card">
                     <dl class="row mt-2 ">
                         <dt class="col s3">Registered at : </dt>
-                        <dd class="col s9">April 14th 2021</dd>
+                        <dd class="col s9"><%= found_user.created_at %></dd>
                         <dt class="col s3">User ID : </dt>
-                        <dd class="col s9"># 3</dd>
+                        <dd class="col s9"># <%= found_user.id %></dd>
                         <dt class="col s3">Email : </dt>
-                        <dd class="col s9">icjfuncion@gmail.com</dd>
+                        <dd class="col s9"><%= found_user.email %></dd>
                         <dt class="col s3">Description : </dt>
-                        <dd class="col s9">Supremeking</dd>
+                        <dd class="col s9"><%= found_user.description %></dd>
                     </dl>
 				</div>
 			</div>

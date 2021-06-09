@@ -135,7 +135,31 @@ class Users {
 	}
 
 	show(req, res) {
-		res.render("show");
+		client.exists("user_session", async (err, result) => {
+			if (result == 0) {
+				res.redirect("/");
+			} else {
+				client.hgetall("user_session", async (err, obj) => {
+					let user = new userModel();
+					let found_user;
+					if (req.params.id != undefined) {
+						let user = new userModel();
+						found_user = await user.find_user_by_id(req.params.id);
+					} else {
+						found_user = await user.find_user_by_id(obj.user_id);
+					}
+					res.render("show", {
+						notification: req.session.notification != undefined ? req.session.notification : undefined,
+						form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+						found_user: found_user[0],
+						user: obj,
+					});
+
+					req.session.destroy();
+				});
+			}
+		});
+		// res.render("show");
 	}
 
 	// process
@@ -219,7 +243,7 @@ class Users {
 							console.log(`here are the results ${result}`);
 						}
 					);
-
+					client.expire("user_session", 7200); ///expire in 2hrs
 					res.redirect("admin");
 				} else {
 					notification.style = "alert-danger";

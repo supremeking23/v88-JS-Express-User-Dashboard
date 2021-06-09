@@ -44,7 +44,10 @@ class User {
 
 	async find_user_by_id(id) {
 		try {
-			const [rows, fields] = await dbConnection.execute(`SELECT * FROM users WHERE id = ?`, [id]);
+			const [rows, fields] = await dbConnection.execute(
+				`SELECT id,first_name,last_name, CONCAT(first_name,' ',last_name) as full_name,email,password, DATE_FORMAT(created_at,"%M %d %Y") as created_at,user_level,description FROM users WHERE id = ?`,
+				[id]
+			);
 
 			return rows;
 		} catch (error) {
