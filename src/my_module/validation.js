@@ -14,7 +14,7 @@ module.exports = () => {
 
 			if (email == "") {
 				form_error_array.push("Email field cannot be blank");
-			} else if (!validateEmail(email)) {
+			} else if (email != undefined && !validateEmail(email)) {
 				form_error_array.push("Email should be valid");
 			}
 

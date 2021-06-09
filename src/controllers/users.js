@@ -180,57 +180,59 @@ class Users {
 	}
 
 	async signin_process(req, res) {
-		let form_error_array = registrationValidation(req.body, validateEmail);
+		try {
+			let form_error_array = registrationValidation(req.body, validateEmail);
 
-		let notification = {};
-		if (form_error_array.length > 0) {
-			req.session.form_errors = form_error_array;
-			res.redirect("/signin");
-			return false;
-		}
+			let notification = {};
+			if (form_error_array.length > 0) {
+				req.session.form_errors = form_error_array;
+				res.redirect("/signin");
+				return false;
+			}
 
-		let user = new userModel();
-		let found_email = await user.find_email(req.body.email);
+			let user = new userModel();
+			let found_email = await user.find_email(req.body.email);
 
-		if (found_email.length > 0) {
-			// console.log(found_email[0].BinaryRow);
-			// console.log(typeof found_email);
-			console.log(found_email[0].password);
-			const match = await bcrypt.compare(req.body.password, found_email[0].password);
-			if (match) {
-				client.hmset(
-					"user_session",
-					[
-						"first_name",
-						found_email[0].first_name,
-						"last_name",
-						found_email[0].last_name,
-						"email",
-						found_email[0].email,
-						"is_logged_in",
-						true,
-						"user_level",
-						found_email[0].user_level,
-						"user_id",
-						found_email[0].id,
-					],
-					(err, result) => {
-						console.log(`here are the results ${result}`);
-					}
-				);
+			if (found_email.length > 0) {
+				// console.log(found_email[0].BinaryRow);
+				// console.log(typeof found_email);
+				// console.log(found_email[0].password);
+				const match = await bcrypt.compare(req.body.password, found_email[0].password);
+				if (match) {
+					client.hmset(
+						"user_session",
+						[
+							"first_name",
+							found_email[0].first_name,
+							"last_name",
+							found_email[0].last_name,
+							"email",
+							found_email[0].email,
+							"is_logged_in",
+							true,
+							"user_level",
+							found_email[0].user_level,
+							"user_id",
+							found_email[0].id,
+						],
+						(err, result) => {
+							console.log(`here are the results ${result}`);
+						}
+					);
 
-				res.redirect("admin");
+					res.redirect("admin");
+				} else {
+					notification.style = "alert-danger";
+					notification.message = "Wrong password";
+				}
 			} else {
 				notification.style = "alert-danger";
-				notification.message = "Wrong password";
+				notification.message = "Unknown user";
 			}
-		} else {
-			notification.style = "alert-danger";
-			notification.message = "Unknown user";
-		}
 
-		req.session.notification = notification;
-		res.redirect("/signin");
+			req.session.notification = notification;
+			res.redirect("/signin");
+		} catch (error) {}
 	}
 
 	async add_new_process(req, res) {
@@ -291,6 +293,38 @@ class Users {
 			if (edit_user.affectedRows > 0) {
 				notification.style = "alert-primary";
 				notification.message = "user information has been updated successufully";
+				req.session.notification = notification;
+				if (obj.user_id === req.body.user_id) {
+					res.redirect(`/edit`);
+				} else {
+					res.redirect(`/edit/${req.body.user_id}`);
+				}
+			}
+		});
+	}
+
+	async edit_password_process(req, res) {
+		client.hgetall("user_session", async (err, obj) => {
+			let form_error_array = registrationValidation(req.body, validateEmail);
+			if (form_error_array.length > 0) {
+				req.session.form_errors = form_error_array;
+				if (obj.user_id === req.body.user_id) {
+					res.redirect(`/edit`);
+				} else {
+					res.redirect(`/edit/${req.body.user_id}`);
+				}
+				return false;
+			}
+
+			let hash_pass = await bcrypt.hash(req.body.password, saltRounds);
+			let user = new userModel();
+			req.body.password = hash_pass;
+			let edit_user = await user.edit_user_password(req.body);
+			// // console.log(edit_user);
+			let notification = {};
+			if (edit_user.affectedRows > 0) {
+				notification.style = "alert-primary";
+				notification.message = "user password has been updated successufully";
 				req.session.notification = notification;
 				if (obj.user_id === req.body.user_id) {
 					res.redirect(`/edit`);

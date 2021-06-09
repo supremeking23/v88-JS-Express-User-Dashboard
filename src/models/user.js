@@ -80,6 +80,21 @@ class User {
 		}
 	}
 
+	async edit_user_password(details) {
+		try {
+			// console.log(details);
+			const [rows, fields] = await dbConnection.execute(`UPDATE users SET password = ?, updated_at = ? WHERE id = ?`, [
+				details.password,
+				new Date(),
+				details.user_id,
+			]);
+			return rows;
+		} catch (error) {
+			console.log(`error on model`);
+			console.log(error);
+		}
+	}
+
 	// async find_email(email) {
 	// 	dbConnection.query('SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45', function (err, results, fields) {
 	// 		console.log(results); // results contains rows returned by server
