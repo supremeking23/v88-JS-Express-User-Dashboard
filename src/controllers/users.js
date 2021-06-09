@@ -18,27 +18,69 @@ class Users {
 	constructor() {}
 
 	index(req, res) {
-		res.render("index");
+		client.exists("user_session", (err, result) => {
+			client.hgetall("user_session", (err, obj) => {
+				res.render("index", { user: obj });
+			});
+		});
+		// res.render("index");
 	}
 
 	signin(req, res) {
-		res.render("signin", {
-			notification: req.session.notification != undefined ? req.session.notification : undefined,
-			form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+		client.exists("user_session", (err, result) => {
+			client.hgetall("user_session", (err, obj) => {
+				res.render("signin", {
+					notification: req.session.notification != undefined ? req.session.notification : undefined,
+					form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+					user: obj,
+				});
+				req.session.destroy();
+			});
 		});
-		req.session.destroy();
+
+		// res.render("signin", {
+		// 	notification: req.session.notification != undefined ? req.session.notification : undefined,
+		// 	form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+		// });
+		// req.session.destroy();
 	}
 
 	register(req, res) {
-		res.render("register", {
-			notification: req.session.notification != undefined ? req.session.notification : undefined,
-			form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+		client.exists("user_session", (err, result) => {
+			client.hgetall("user_session", (err, obj) => {
+				res.render("register", {
+					notification: req.session.notification != undefined ? req.session.notification : undefined,
+					form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+					user: obj,
+				});
+				req.session.destroy();
+			});
 		});
-		req.session.destroy();
+
+		// res.render("register", {
+		// 	notification: req.session.notification != undefined ? req.session.notification : undefined,
+		// 	form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+		// });
+		// req.session.destroy();
 	}
 
 	admin(req, res) {
-		res.render("admin");
+		client.exists("user_session", (err, result) => {
+			if (result == 0) {
+				res.redirect("/");
+			} else {
+				client.hgetall("user_session", (err, obj) => {
+					res.render("admin", { user: obj });
+				});
+			}
+		});
+
+		// res.render("admin");
+	}
+
+	logout(req, res) {
+		client.del("user_session");
+		res.redirect("/");
 	}
 
 	new(req, res) {
@@ -103,6 +145,7 @@ class Users {
 			res.redirect("/signin");
 			return false;
 		}
+
 		let user = new userModel();
 		let found_email = await user.find_email(req.body.email);
 
@@ -112,6 +155,27 @@ class Users {
 			console.log(found_email[0].password);
 			const match = await bcrypt.compare(req.body.password, found_email[0].password);
 			if (match) {
+				client.hmset(
+					"user_session",
+					[
+						"first_name",
+						found_email[0].first_name,
+						"last_name",
+						found_email[0].last_name,
+						"email",
+						found_email[0].email,
+						"is_logged_in",
+						true,
+						"user_level",
+						found_email[0].user_level,
+						"user_id",
+						found_email[0].id,
+					],
+					(err, result) => {
+						console.log(`here are the results ${result}`);
+					}
+				);
+
 				res.redirect("admin");
 			} else {
 				notification.style = "alert-danger";

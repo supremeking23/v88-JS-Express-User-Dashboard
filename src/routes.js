@@ -4,6 +4,7 @@ module.exports = (app) => {
 
 	app.get("/", user.index);
 	app.get("/signin", user.signin);
+	app.get("/logout", user.logout);
 	app.get("/register", user.register);
 	app.get("/admin", user.admin);
 	app.get("/new", user.new);
