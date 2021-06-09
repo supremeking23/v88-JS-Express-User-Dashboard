@@ -9,7 +9,7 @@
 		
             <div class="row">
                 <div class="col s12 ">
-                    <a href="/admin" class="btn btn-primary">Return to Dashboard <i class="material-icons left">arrow_back</i></a>
+                    <a href="/<%=(user.user_level == 9)? 'admin' : 'dashboard'%>" class="btn btn-primary">Return to Dashboard <i class="material-icons left">arrow_back</i></a>
                 </div>
             </div>
 

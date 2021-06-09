@@ -7,6 +7,7 @@ module.exports = (app) => {
 	app.get("/logout", user.logout);
 	app.get("/register", user.register);
 	app.get("/admin", user.admin);
+	app.get("/dashboard", user.dashboard);
 	app.get("/new", user.new);
 	app.get("/edit/:id?", user.edit); // "?"  for optional
 	app.get("/show/:id?", user.show); // "?"  for optional

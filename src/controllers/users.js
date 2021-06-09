@@ -80,6 +80,22 @@ class Users {
 		// res.render("admin");
 	}
 
+	async dashboard(req, res) {
+		client.exists("user_session", async (err, result) => {
+			if (result == 0) {
+				res.redirect("/");
+			} else {
+				let user = new userModel();
+				let users = await user.get_all_users();
+				client.hgetall("user_session", (err, obj) => {
+					res.render("dashboard", { user: obj, users });
+				});
+			}
+		});
+
+		// res.render("admin");
+	}
+
 	logout(req, res) {
 		client.del("user_session");
 		res.redirect("/");
@@ -244,7 +260,12 @@ class Users {
 						}
 					);
 					client.expire("user_session", 7200); ///expire in 2hrs
-					res.redirect("admin");
+
+					if (found_email[0].user_level === 9) {
+						res.redirect("admin");
+						return false;
+					}
+					res.redirect("dashboard");
 				} else {
 					notification.style = "alert-danger";
 					notification.message = "Wrong password";
