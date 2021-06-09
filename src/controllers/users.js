@@ -141,7 +141,32 @@ class Users {
 	}
 
 	edit(req, res) {
-		res.render("edit");
+		client.exists("user_session", async (err, result) => {
+			if (result == 0) {
+				res.redirect("/");
+			} else {
+				client.hgetall("user_session", (err, obj) => {
+					if (req.params.id == undefined) {
+						res.render("edit", {
+							// notification: req.session.notification != undefined ? req.session.notification : undefined,
+							// form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+
+							user: obj,
+						});
+					} else {
+						res.render("edit", {
+							// notification: req.session.notification != undefined ? req.session.notification : undefined,
+							// form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
+							user_to_edit: req.params.id,
+							user: obj,
+						});
+					}
+
+					req.session.destroy();
+				});
+			}
+		});
+		// res.render("edit");
 	}
 
 	show(req, res) {
