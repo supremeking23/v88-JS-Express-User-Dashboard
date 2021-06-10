@@ -1,10 +1,13 @@
 const userModel = require("../models/user");
-const { validateEmail, formError, messageHandler } = require("../my_module/utilities")();
+const messageModel = require("../models/Message");
+const { validateEmail, formError, messageHandler, dateDifference } = require("../my_module/utilities")();
 const { registrationValidation, loginValidation } = require("../my_module/validation")();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const redis = require("redis");
 const client = redis.createClient(6379); //port number is optional
+
+var moment = require("moment"); // require
 
 client.on("connect", function () {
 	console.log("Connected to Redis...");
@@ -157,6 +160,7 @@ class Users {
 			} else {
 				client.hgetall("user_session", async (err, obj) => {
 					let user = new userModel();
+					let message = new messageModel();
 					let found_user;
 					if (req.params.id != undefined) {
 						let user = new userModel();
@@ -164,10 +168,20 @@ class Users {
 					} else {
 						found_user = await user.find_user_by_id(obj.user_id);
 					}
+
+					let get_messages = await message.get_all_messages_by_recipient_id(found_user[0].id);
+
+					// get_messages[1].created_at = dateDifference(get_messages[1].created_at);
+
+					// console.log(get_messages);
+					// balikan bukas
+					console.log(moment().format("MMMM Do YYYY, h:mm:ss a"));
+
 					res.render("show", {
 						notification: req.session.notification != undefined ? req.session.notification : undefined,
 						form_errors: req.session.form_errors != undefined ? req.session.form_errors : undefined,
 						found_user: found_user[0],
+						get_messages,
 						user: obj,
 					});
 

@@ -7,25 +7,25 @@
 			<%- include('includes/alerts')%>
             <div class="row">
                 <div class="col s12 ">
-                    <a href="/admin" class="btn btn-primary">Return to Dashboard <i class="material-icons left">arrow_back</i></a>
+                    <a href="/show/" class="btn btn-primary">Go Back <i class="material-icons left">arrow_back</i></a>
                 </div>
             </div>
 
 			<div class="row ">
 				<div class="col m12 s12 card">
-                    <h2><%= found_user.full_name %></h2>
+                    
 				</div>
                 <div class="col m12 s12 card">
                     <dl class="row mt-2 ">
-                        <dt class="col s6 m3">Registered at : </dt>
-                        <dd class="col s6 m9"><%= found_user.created_at %></dd>
-                        <dt class="col s6 m3">User ID : </dt>
-                        <dd class="col s6 m9"># <%= found_user.id %></dd>
-                        <dt class="col s4 m3">Email : </dt>
-                        <dd class="col s8 m9"><%= found_user.email %></dd>
-                        <dt class="col s6 m3">Description : </dt>
-                        <dd class="col s6 m9"><%= found_user.description %></dd>
-                        <!-- <p><%= found_user.description %></p> -->
+                        <dt class="col s6 m3">Message to : </dt>
+                        <dd class="col s6 m9">sdsd</dd>
+                        <dt class="col s6 m3">Message from : </dt>
+                        <dd class="col s6 m9"></dd>
+                        <dt class="col s4 m3">Date: </dt>
+                        <dd class="col s8 m9"></dd>
+                        <dt class="col s6 m3">Message Content:</dt>
+                        <dd class="col s6 m9"></dd>
+                      
                     </dl>
                    
 				</div>
@@ -33,17 +33,17 @@
 
             <div class="row send-message-section">
                 <div class="col s12">
-                    <a class="waves-effect waves-light btn modal-trigger btn-primary" href="#modal1" style="float: right;">Post a message</a>
+                    <a class="waves-effect waves-light btn modal-trigger btn-primary" href="#modal1" style="float: right;">Reply to this message</a>
 
                     <!-- Modal Structure -->
                     <div id="modal1" class="modal">
                         <form action="/post_message_process" method="POST">
                             <div class="modal-content">
-                                <h5>Leave a message for Ivan Christian Jay test</h5>
+                                <h5>Reply to ;;;; message</h5>
                             
                                     <div class="input-field col s12">
-                                        <input type="hidden" name="message_from" value="<%= user.user_id %>">
-                                        <input type="hidden" name="message_to" value="<%= found_user.id %>">
+                                        <input type="hidden" name="comment_from" value="">
+                                        <input type="hidden" name="comment_to" value="">
                                         <textarea id="textarea1" id="message_text" name="message_text" class="materialize-textarea"></textarea>
                                         <label for="textarea1">Description</label>
                                     </div>
@@ -60,17 +60,17 @@
 
 
             <div class="row messages">
-                <% for (let message in get_messages) { %>
+              
                 <div class="col s12 card message">
                    <div class="message-head">
-                        <h2><%= get_messages[message].full_name%></h2>
+                        <h2>sdsdssdsd</h2>
                         <span >1 months ago</span>
                    </div>
                    
-                    <p><%= get_messages[message].message%></p>
-                    <a href="/show/<%= found_user.id %>/<%= get_messages[message].message_id%>" style="float:right">(6) replies</a>
+                    <p></p>
+                 
                 </div>
-                <% } %>
+             
             </div>
 
 		</div>

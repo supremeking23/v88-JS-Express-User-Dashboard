@@ -28,5 +28,14 @@ module.exports = () => {
 				content,
 			};
 		},
+
+		dateDifference: (date, date_format = `%y %m %d %h %i %s`) => {
+			let datetime1 = new Date(date);
+			let datetime2 = new Date();
+
+			let diff = new Date(datetime1 - datetime2);
+
+			return diff;
+		},
 	};
 };
