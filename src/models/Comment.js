@@ -28,7 +28,7 @@ class Comment {
 	async get_all_replies_by_message_id(message_id) {
 		try {
 			const [row] = await dbConnection.execute(
-				`SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, comments.comment, comments.created_at,comments.id as comment_id FROM users INNER JOIN comments ON users.id = comments.user_id WHERE comments.message_id = ? ORDER BY comments.created_at DESC`,
+				`SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, comments.comment, comments.created_at, comments.created_at AS raw_date,comments.id as comment_id FROM users INNER JOIN comments ON users.id = comments.user_id WHERE comments.message_id = ? ORDER BY comments.created_at DESC`,
 
 				[message_id]
 			);

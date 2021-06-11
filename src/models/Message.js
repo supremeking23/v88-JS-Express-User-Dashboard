@@ -28,7 +28,7 @@ class Message {
 	async get_all_messages_by_recipient_id(id) {
 		try {
 			const [row] = await dbConnection.execute(
-				`SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, messages.message, messages.created_at,messages.id as message_id FROM users INNER JOIN messages ON users.id = messages.from_user_id  WHERE messages.to_user_id = ? ORDER BY messages.created_at DESC`,
+				`SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, messages.message, messages.created_at AS raw_date,DATE_FORMAT(messages.created_at,"%M %d %Y") as date_format,messages.id as message_id FROM users INNER JOIN messages ON users.id = messages.from_user_id  WHERE messages.to_user_id = ? ORDER BY messages.created_at DESC`,
 
 				[id]
 			);

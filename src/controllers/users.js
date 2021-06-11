@@ -179,6 +179,23 @@ class Users {
 						let comment_count = await comment.count_comments_by_message_id(get_messages[i].message_id);
 
 						get_messages[i].comment_count = comment_count[0] != undefined ? comment_count[0].count_comments : 0;
+
+						let date_diff = dateDifference(get_messages[i].raw_date);
+						let date_send;
+						if (date_diff[0] > 0) {
+							date_send = `${date_diff[0]} year(s) ago`;
+						} else if (date_diff[1] > 0) {
+							date_send = `${date_diff[1]} month(s) ago`;
+						} else if (date_diff[2] > 0) {
+							date_send = `${date_diff[2]} days(s) ago`;
+						} else if (date_diff[3] > 1) {
+							date_send = `${date_diff[3]} hour(s) ago`;
+						} else if (date_diff[4] > 1) {
+							date_send = `${date_diff[4]} minutes(s) ago`;
+						} else {
+							date_send = `${date_diff[5]} seconds(s) ago`;
+						}
+						get_messages[i].date_send = date_send;
 					}
 
 					console.log(get_messages);

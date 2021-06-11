@@ -1,6 +1,7 @@
 const userModel = require("../models/user");
 const messageModel = require("../models/Message");
 const commentModel = require("../models/Comment");
+const { dateDifference } = require("../my_module/utilities")();
 const redis = require("redis");
 const client = redis.createClient(6379); //port number is optional
 class Comments {
@@ -22,6 +23,24 @@ class Comments {
 					// console.log(message_detail);
 					let get_comments = await comment.get_all_replies_by_message_id(req.params.message_id);
 
+					for (let i = 0; i < get_comments.length; i++) {
+						let date_diff = dateDifference(get_comments[i].raw_date);
+						let date_send;
+						if (date_diff[0] > 0) {
+							date_send = `${date_diff[0]} year(s) ago`;
+						} else if (date_diff[1] > 0) {
+							date_send = `${date_diff[1]} month(s) ago`;
+						} else if (date_diff[2] > 0) {
+							date_send = `${date_diff[2]} days(s) ago`;
+						} else if (date_diff[3] > 1) {
+							date_send = `${date_diff[3]} hour(s) ago`;
+						} else if (date_diff[4] > 1) {
+							date_send = `${date_diff[4]} minutes(s) ago`;
+						} else {
+							date_send = `${date_diff[5]} seconds(s) ago`;
+						}
+						get_comments[i].date_send = date_send;
+					}
 					//get the replies/comments
 
 					res.render("comments", {
