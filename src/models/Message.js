@@ -29,7 +29,7 @@ class Message {
 		try {
 			const [row] = await dbConnection.execute(
 				`SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, messages.message, messages.created_at,messages.id as message_id FROM users INNER JOIN messages ON users.id = messages.from_user_id  WHERE messages.to_user_id = ? ORDER BY messages.created_at DESC`,
-				// "SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, messages.message, messages.created_at, " + dateDifference(+"messages.created_at"+) +" FROM users INNER JOIN messages ON users.id = messages.from_user_id  WHERE messages.to_user_id = ? ORDER BY messages.created_at DESC",
+
 				[id]
 			);
 
@@ -43,8 +43,8 @@ class Message {
 	async get_message_detail_by_message_id(id) {
 		try {
 			const [row] = await dbConnection.execute(
-				`SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, messages.message, messages.created_at,messages.id as message_id FROM users INNER JOIN messages ON users.id = messages.from_user_id  WHERE users.id = ? ORDER BY messages.created_at DESC`,
-				// "SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, messages.message, messages.created_at, " + dateDifference(+"messages.created_at"+) +" FROM users INNER JOIN messages ON users.id = messages.from_user_id  WHERE messages.to_user_id = ? ORDER BY messages.created_at DESC",
+				`SELECT users.first_name,users.last_name,CONCAT(users.first_name,' ',users.last_name) AS full_name, messages.message,DATE_FORMAT(messages.created_at,"%M %d %Y") as created_at ,messages.id as message_id FROM users INNER JOIN messages ON users.id = messages.from_user_id  WHERE messages.id = ? ORDER BY messages.created_at DESC`,
+
 				[id]
 			);
 			return row;

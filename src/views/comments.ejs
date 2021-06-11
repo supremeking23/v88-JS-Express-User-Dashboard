@@ -7,7 +7,7 @@
 			<%- include('includes/alerts')%>
             <div class="row">
                 <div class="col s12 ">
-                    <a href="/show/" class="btn btn-primary">Go Back <i class="material-icons left">arrow_back</i></a>
+                    <a href="/show/<%= found_user.id %>" class="btn btn-primary">Go Back <i class="material-icons left">arrow_back</i></a>
                 </div>
             </div>
 
@@ -18,13 +18,13 @@
                 <div class="col m12 s12 card">
                     <dl class="row mt-2 ">
                         <dt class="col s6 m3">Message to : </dt>
-                        <dd class="col s6 m9">sdsd</dd>
+                        <dd class="col s6 m9"><%= found_user.full_name %></dd>
                         <dt class="col s6 m3">Message from : </dt>
-                        <dd class="col s6 m9"></dd>
+                        <dd class="col s6 m9"><%= message_detail.full_name %></dd>
                         <dt class="col s4 m3">Date: </dt>
-                        <dd class="col s8 m9"></dd>
+                        <dd class="col s8 m9"><%= message_detail.created_at %></dd>
                         <dt class="col s6 m3">Message Content:</dt>
-                        <dd class="col s6 m9"></dd>
+                        <dd class="col s6 m9"><%= message_detail.message %></dd>
                       
                     </dl>
                    
@@ -37,15 +37,17 @@
 
                     <!-- Modal Structure -->
                     <div id="modal1" class="modal">
-                        <form action="/post_message_process" method="POST">
+                        <form action="/post_comment_process" method="POST">
                             <div class="modal-content">
-                                <h5>Reply to ;;;; message</h5>
+                                <h5>Reply to <%= message_detail.full_name %> message</h5>
                             
                                     <div class="input-field col s12">
-                                        <input type="hidden" name="comment_from" value="">
-                                        <input type="hidden" name="comment_to" value="">
-                                        <textarea id="textarea1" id="message_text" name="message_text" class="materialize-textarea"></textarea>
-                                        <label for="textarea1">Description</label>
+                                        <input type="hidden" name="comment_from" value="<%= user.user_id %>">
+                                        <input type="hidden" name="comment_to" value="<%= found_user.id %>">
+                                        <input type="hidden" name="message_id" value="<%= message_detail.message_id %>">
+                                        <!-- <input type="hidden" name="comment_to" value=""> -->
+                                        <textarea id="textarea1" id="comment_text" name="comment_text" class="materialize-textarea"></textarea>
+                                        <label for="textarea1">Comment</label>
                                     </div>
                             </div>
                             <div class="modal-footer">
@@ -58,19 +60,20 @@
                 </div>
             </div>
 
-
+            <!-- replies/comments -->
             <div class="row messages">
               
+                <%for(let comment in get_comments){ %>
                 <div class="col s12 card message">
                    <div class="message-head">
-                        <h2>sdsdssdsd</h2>
+                        <h2><%=get_comments[comment].full_name%></h2>
                         <span >1 months ago</span>
                    </div>
                    
-                    <p></p>
+                    <p><%=get_comments[comment].comment%></p>
                  
                 </div>
-             
+                <% } %>
             </div>
 
 		</div>

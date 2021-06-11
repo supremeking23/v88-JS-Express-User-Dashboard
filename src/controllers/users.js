@@ -1,5 +1,6 @@
 const userModel = require("../models/user");
 const messageModel = require("../models/Message");
+const commentModel = require("../models/Comment");
 const { validateEmail, formError, messageHandler, dateDifference } = require("../my_module/utilities")();
 const { registrationValidation, loginValidation } = require("../my_module/validation")();
 const bcrypt = require("bcrypt");
@@ -161,6 +162,7 @@ class Users {
 				client.hgetall("user_session", async (err, obj) => {
 					let user = new userModel();
 					let message = new messageModel();
+					let comment = new commentModel();
 					let found_user;
 					if (req.params.id != undefined) {
 						let user = new userModel();
@@ -170,6 +172,13 @@ class Users {
 					}
 
 					let get_messages = await message.get_all_messages_by_recipient_id(found_user[0].id);
+
+					for (let i = 0; i < get_messages.length; i++) {
+						console.log(get_messages[i].message_id);
+					}
+
+					// let count_comment = await comment.count_comments_by_message_id()
+					// count_comments_by_message_id
 
 					// get_messages[1].created_at = dateDifference(get_messages[1].created_at);
 

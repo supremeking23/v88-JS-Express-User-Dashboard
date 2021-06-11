@@ -27,6 +27,7 @@ module.exports = (app) => {
 	app.post("/edit_description_process", user.edit_description_process);
 
 	app.post("/post_message_process", message.post_message_process);
+	app.post("/post_comment_process", comments.post_comment_process);
 
 	// app.post("/filter-by-name", user.filter_name_ajax);
 	// app.post("/filter-by-gender", user.filter_gender_ajax);
