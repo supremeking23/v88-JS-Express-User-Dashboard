@@ -43,13 +43,16 @@ class Comment {
 	async count_comments_by_message_id(message_id) {
 		try {
 			const [row] = await dbConnection.execute(
-				`SELECT COUNT(*) FROM comments WHERE message_id = ?`,
-
+				// `SELECT COUNT(*) FROM comments WHERE message_id = ?`,
+				`SELECT messages.id as message_id, COUNT(comments.id) as count_comments FROM messages INNER JOIN comments ON messages.id = comments.message_id GROUP BY message_id HAVING message_id = ?;`,
 				[message_id]
 			);
 
 			return row;
-		} catch (error) {}
+		} catch (error) {
+			console.log(`error on model`);
+			console.log(error);
+		}
 	}
 
 	// $query = "SELECT users.first_name, users.last_name, users.id,replies.user_id,replies.reply,replies.created_at FROM users INNER JOIN replies ON users.id = replies.user_id WHERE replies.message_id = ?  ORDER BY replies.created_at DESC";

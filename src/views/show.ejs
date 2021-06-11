@@ -68,7 +68,7 @@
                    </div>
                    
                     <p><%= get_messages[message].message%></p>
-                    <a href="/show/<%= found_user.id %>/<%= get_messages[message].message_id%>" style="float:right">(6) replies</a>
+                    <a href="/show/<%= found_user.id %>/<%= get_messages[message].message_id%>" style="float:right">(<%= get_messages[message].comment_count%>) replies</a>
                 </div>
                 <% } %>
             </div>

@@ -174,17 +174,16 @@ class Users {
 					let get_messages = await message.get_all_messages_by_recipient_id(found_user[0].id);
 
 					for (let i = 0; i < get_messages.length; i++) {
-						console.log(get_messages[i].message_id);
+						// console.log(get_messages[i].message_id);
+						// get comment count
+						let comment_count = await comment.count_comments_by_message_id(get_messages[i].message_id);
+
+						get_messages[i].comment_count = comment_count[0] != undefined ? comment_count[0].count_comments : 0;
 					}
 
-					// let count_comment = await comment.count_comments_by_message_id()
-					// count_comments_by_message_id
+					console.log(get_messages);
 
-					// get_messages[1].created_at = dateDifference(get_messages[1].created_at);
-
-					// console.log(get_messages);
-					// balikan bukas
-					console.log(moment().format("MMMM Do YYYY, h:mm:ss a"));
+					// console.log(moment().format("MMMM Do YYYY, h:mm:ss a"));
 
 					res.render("show", {
 						notification: req.session.notification != undefined ? req.session.notification : undefined,
